@@ -1,6 +1,6 @@
 <?php
 $activePage = 'products';
-require_once '../../db.php';
+require_once '../../../db.php';
 
 $db = DATA_BASE::getInstance();
 $result   = $db->selectAll("products");  
@@ -34,7 +34,7 @@ include '../Sidebar.php';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cafeteria — Products</title>
-  <link rel="stylesheet" href="../../assets/css/admin_products.css">
+  <link rel="stylesheet" href="/SIP HUB/assets/css/admin.css">
 
   <!-- Bootstrap 5 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
@@ -52,7 +52,7 @@ include '../Sidebar.php';
       <h1 class="page-title">Manage Products</h1>
       <p class="page-subtitle mb-0">Sweeten up the menu by adding or editing cafeteria items.</p>
     </div>
-    <a href="product-add.php" class="btn-add">
+    <a href="product_form.php" class="btn-add">
       <i class="bi bi-plus-circle"></i> Add New Item
     </a>
   </div>
@@ -105,9 +105,8 @@ include '../Sidebar.php';
             <tr>
               <td>
                 <div class="d-flex align-items-center gap-3">
-                  <?php if (!empty($p['img'])): ?>
-                    <img src="<?= htmlspecialchars($p['img']) ?>"
-                         alt="" class="prod-thumb">
+                  <?php if (!empty($p['image'])): ?>
+                  <img src="<?php echo '../../../images/' . $p['image']; ?>"  style="width: 60px; height: 60px; object-fit: cover;">
                   <?php else: ?>
                     <div class="prod-thumb"></div>
                   <?php endif; ?>
@@ -141,7 +140,7 @@ include '../Sidebar.php';
               <!-- Actions -->
               <td>
                 <div class="d-flex justify-content-end gap-2">
-                  <a href="product-edit.php?id=<?=($p['id']) ?>"
+                  <a href="product_form.php?id=<?=($p['id']) ?>"
                      class="act-btn" title="Edit">
                     <i class="bi bi-pencil"></i>
                   </a>
