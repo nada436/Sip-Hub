@@ -1,59 +1,101 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cafeteria — Products</title>
-  <link rel="stylesheet" href="../assets/css/admin_products.css">
-
-  <!-- Bootstrap 5 -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-  <!-- Bootstrap Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
-</head>
-<body>
 <?php
-$activePage  = 'products';
-$menuItems   = [
-  ['id'=>'home',       'icon'=>'bi-house',         'label'=>'Home'],
-  ['id'=>'orders',     'icon'=>'bi-bag-check',      'label'=>'Orders'],
-  ['id'=>'dashboard',  'icon'=>'bi-grid',           'label'=>'Dashboard'],
-  ['id'=>'products',   'icon'=>'bi-box-seam',       'label'=>'Products'],
-  ['id'=>'users',      'icon'=>'bi-people',         'label'=>'Users'],
-  ['id'=>'categories', 'icon'=>'bi-tag',            'label'=>'Categories'],
+/**
+ * Sidebar.php  –  Candy Cafeteria Admin Sidebar
+ *
+ * Usage: include right after Navbar.php on every admin page.
+ * Requires $activePage to be defined before including this file.
+ *
+ * Example:
+ *   $activePage = 'products';
+ *   include '../Sidebar.php';
+ */
 
+$activePage = $activePage ?? '';
+
+$menuItems = [
+  /* ── MAIN ── */
+  ['section' => 'Main'],
+  ['id' => 'home',       'icon' => 'bi-house',      'label' => 'Home'],
+  ['id' => 'dashboard',  'icon' => 'bi-grid-1x2',   'label' => 'Dashboard'],
+  ['id' => 'live-orders','icon' => 'bi-lightning-charge','label' => 'Current Orders'],
+
+  /* ── MANAGEMENT ── */
+  ['section' => 'Management'],
+  ['id' => 'orders',     'icon' => 'bi-bag-check',  'label' => 'Orders'],
+  ['id' => 'products',   'icon' => 'bi-box-seam',   'label' => 'Products'],
+  ['id' => 'categories', 'icon' => 'bi-tag',        'label' => 'Categories'],
+  ['id' => 'users',      'icon' => 'bi-people',     'label' => 'Users'],
+
+  /* ── ANALYTICS ── */
+  ['section' => 'Analytics'],
+  ['id' => 'reports',    'icon' => 'bi-bar-chart-line', 'label' => 'Reports & Checks'],
 ];
+
+// Resolve logged-in admin name (fallback to session or default)
+$adminName  = $_SESSION['admin_name']  ?? 'Admin';
+$adminEmail = $_SESSION['admin_email'] ?? 'admin@cafeteria.com';
+$adminRole  = $_SESSION['admin_role']  ?? 'Head Manager';
+$avatarUrl  = 'https://ui-avatars.com/api/?name=' . urlencode($adminName) . '&background=e91e8c&color=fff&size=80';
 ?>
-<div class="candy-sidebar">
+
+<!-- Sidebar backdrop (mobile overlay) -->
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<aside class="candy-sidebar" id="candySidebar" aria-label="Admin navigation">
+
+  <!-- Header badge -->
   <div class="sidebar-header">
-    <p class="s-panel-title">Admin Panel</p>
-    <p class="s-panel-sub">Cafeteria Management</p>
-  </div>
-
-  <nav class="sidebar-nav">
-    <?php foreach ($menuItems as $m): ?>
-      <a href="<?= $m['id'] ?>.php"
-         class="s-link <?= $activePage === $m['id'] ? 'active' : '' ?>">
-        <span class="s-icon"><i class="bi <?= $m['icon'] ?>"></i></span>
-        <?= $m['label'] ?>
-      </a>
-    <?php endforeach; ?>
-  </nav>
-
-  <div class="sidebar-footer">
-    <div class="d-flex align-items-center gap-3">
-      <img src="https://ui-avatars.com/api/?name=Admin&background=e91e8c&color=fff&size=40"
-           alt="Admin" class="rounded-circle" width="42" height="42">
+    <div class="s-panel-badge">
+      <div class="badge-icon"><i class="bi bi-grid-fill"></i></div>
       <div>
-        <p class="s-admin-name">Admin Avatar</p>
-        <a href="logout.php" class="s-admin-logout">LOGOUT</a>
+        <p class="s-panel-title">Admin Panel</p>
+        <p class="s-panel-sub">Cafeteria Management</p>
       </div>
     </div>
   </div>
-</div>  
-</body>
-</html>
+
+  <!-- Navigation -->
+  <nav class="sidebar-nav">
+    <?php foreach ($menuItems as $item): ?>
+
+      <?php if (isset($item['section'])): ?>
+        <span class="nav-section-label"><?= htmlspecialchars($item['section']) ?></span>
+
+      <?php else:
+        $isActive = $activePage === $item['id'];
+      ?>
+        <a
+          href="<?= htmlspecialchars($item['id']) ?>.php"
+          class="s-link <?= $isActive ? 'active' : '' ?>"
+          <?= $isActive ? 'aria-current="page"' : '' ?>
+          title="<?= htmlspecialchars($item['label']) ?>"
+        >
+          <span class="s-icon"><i class="bi <?= $item['icon'] ?>"></i></span>
+          <span><?= htmlspecialchars($item['label']) ?></span>
+        </a>
+      <?php endif; ?>
+
+    <?php endforeach; ?>
+  </nav>
+
+  <!-- Footer: admin profile -->
+  <div class="sidebar-footer">
+    <div class="d-flex align-items-center gap-3">
+      <img
+        src="<?= htmlspecialchars($avatarUrl) ?>"
+        alt="<?= htmlspecialchars($adminName) ?>"
+        class="rounded-circle"
+        width="40" height="40"
+        style="border: 2px solid var(--border); flex-shrink:0;"
+      >
+      <div style="min-width:0;">
+        <p class="s-admin-name text-truncate"><?= htmlspecialchars($adminName) ?></p>
+        <p class="s-admin-role text-truncate"><?= htmlspecialchars($adminRole) ?></p>
+        <a href="logout.php" class="s-admin-logout">
+          <i class="bi bi-box-arrow-right me-1"></i>Logout
+        </a>
+      </div>
+    </div>
+  </div>
+
+</aside>
