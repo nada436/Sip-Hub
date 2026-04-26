@@ -1,0 +1,412 @@
+/* ============================================================
+   admin_live_orders.css
+   Styles specific to the Live Orders page (views/admin/live-orders.php)
+   Requires: admin_layout.css
+   ============================================================ */
+
+/* ── STAT CARDS ──────────────────────────────────────── */
+.stat-card {
+  border-radius: var(--radius);
+  padding: 1.2rem 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.sc-pink {
+  background: linear-gradient(135deg, #fce4f3, #fdf2f8);
+}
+.sc-purple {
+  background: linear-gradient(135deg, #ede9fe, #f5f3ff);
+}
+.sc-green {
+  background: linear-gradient(135deg, #d1fae5, #ecfdf5);
+}
+
+.stat-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.si-pink {
+  background: #fce4f3;
+  color: var(--pink);
+}
+.si-purple {
+  background: #ddd6fe;
+  color: var(--purple);
+}
+.si-green {
+  background: #a7f3d0;
+  color: var(--green);
+}
+
+.stat-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.sl-pink {
+  color: var(--pink);
+}
+.sl-purple {
+  color: var(--purple);
+}
+.sl-green {
+  color: var(--green);
+}
+
+.stat-value {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+
+/* ── KANBAN BOARD ────────────────────────────────────── */
+.kanban {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.k-col {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-card);
+  min-width: 0; /* prevent overflow */
+}
+
+.k-col-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.k-col-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.k-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot-pink {
+  background: var(--pink);
+}
+.dot-purple {
+  background: var(--purple);
+}
+.dot-green {
+  background: var(--green);
+}
+
+.k-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  border-radius: 20px;
+}
+.kb-pink {
+  background: #fce4f3;
+  color: var(--pink);
+}
+.kb-purple {
+  background: #ede9fe;
+  color: var(--purple);
+}
+.kb-green {
+  background: #d1fae5;
+  color: var(--green);
+}
+
+/* ── ORDER CARD ──────────────────────────────────────── */
+.order-card {
+  background: #fdf2f8;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 0.85rem;
+  border: 1.5px solid transparent;
+  transition:
+    border var(--transition),
+    box-shadow var(--transition),
+    transform var(--transition);
+  cursor: default;
+}
+.order-card:last-child {
+  margin-bottom: 0;
+}
+.order-card:hover {
+  border-color: var(--pink-mid);
+  box-shadow: 0 4px 18px rgba(233, 30, 140, 0.12);
+  transform: translateY(-1px);
+}
+.order-card.kitchen-card {
+  background: #f5f3ff;
+  border-color: #e9d5ff;
+}
+.order-card.kitchen-card:hover {
+  border-color: #c4b5fd;
+}
+.order-card.pickup-card {
+  background: #ecfdf5;
+}
+.order-card.pickup-card:hover {
+  border-color: #6ee7b7;
+}
+
+.oc-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.55rem;
+}
+.oc-id {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.18rem 0.6rem;
+  border-radius: 20px;
+}
+.oc-id-pink {
+  background: var(--pink);
+  color: #fff;
+}
+.oc-id-purple {
+  background: var(--purple);
+  color: #fff;
+}
+.oc-id-green {
+  background: var(--green);
+  color: #fff;
+}
+
+.oc-time {
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+.oc-name {
+  font-weight: 600;
+  font-size: 0.92rem;
+  margin-bottom: 0.45rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.oc-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.75rem;
+}
+.oc-item-tag {
+  font-size: 0.7rem;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 0.12rem 0.5rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.oc-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.oc-user {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.oc-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, var(--pink), var(--pink-mid));
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+.oc-username {
+  font-size: 0.78rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.oc-price {
+  font-weight: 700;
+  color: var(--pink);
+  font-size: 0.88rem;
+  white-space: nowrap;
+}
+
+/* Action buttons */
+.btn-action {
+  font-size: 0.72rem;
+  font-weight: 600;
+  border: none;
+  padding: 0.3rem 0.85rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition:
+    opacity var(--transition),
+    transform var(--transition);
+  white-space: nowrap;
+}
+.btn-action:hover {
+  opacity: 0.85;
+  transform: scale(0.97);
+}
+.btn-complete {
+  background: var(--purple);
+  color: #fff;
+}
+.btn-notify {
+  background: var(--pink);
+  color: #fff;
+}
+
+/* ── BOTTOM WIDGETS ──────────────────────────────────── */
+.rush-card {
+  background: linear-gradient(135deg, #7c3aed, var(--pink));
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  color: #fff;
+  height: 100%;
+}
+.rush-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+.rush-sub {
+  font-size: 0.82rem;
+  opacity: 0.85;
+  margin: 0.35rem 0 1rem;
+}
+.rush-stat {
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 1rem;
+  backdrop-filter: blur(4px);
+}
+.rs-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+.rs-val {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.widget-card {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 1.4rem;
+  box-shadow: var(--shadow-card);
+  height: 100%;
+}
+.widget-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+}
+.hap-score {
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.hap-sub {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.6rem;
+}
+.avatar-row img {
+  border: 2px solid #fff;
+}
+.avatar-more {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--pink-light);
+  color: var(--pink);
+  font-size: 0.62rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  border: 2px solid #fff;
+}
+
+.goal-bar-track {
+  height: 8px;
+  background: var(--pink-light);
+  border-radius: 4px;
+}
+.goal-bar-fill {
+  height: 8px;
+  background: var(--pink);
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.goal-sub {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 0.4rem;
+}
+
+/* Empty states */
+.empty-state {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+.empty-state i {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.5rem;
+  opacity: 0.5;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media (max-width: 992px) {
+  .kanban {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 640px) {
+  .kanban {
+    grid-template-columns: 1fr;
+  }
+  .stat-value {
+    font-size: 1.4rem;
+  }
+}

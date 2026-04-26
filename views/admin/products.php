@@ -1,22 +1,29 @@
 <?php
+require_once '../../config/config.php';
+
 $activePage = 'products';
+
+// Flash messages from product-delete
+$flashSuccess = $_SESSION['flash_success'] ?? '';
+$flashError   = $_SESSION['flash_error']   ?? '';
+unset($_SESSION['flash_success'], $_SESSION['flash_error']);
+
 require_once '../../db.php';
 
 $db = DATA_BASE::getInstance();
-$result   = $db->selectAll("products");  
+$result = $db->selectAll('products');
 $products = [];
 while ($row = $result->fetch_assoc()) {
     $products[] = $row;
 }
 
-$totalItems   = count($products);
-$activeTreats = count(array_filter($products, fn($p) => strtolower($p['quantity']) >0 ));
-$lowStock     = count(array_filter($products, fn($p) => strtolower($p['quantity']) < 30));
+$totalItems = count($products);
+$activeTreats = count(array_filter($products, fn($p) => (int)($p['quantity'] ?? 0) > 0));
+$lowStock = count(array_filter($products, fn($p) => (int)($p['quantity'] ?? 0) < 30));
 
-// Pagination 
-$perPage      = 4;
-$currentPage  = max(1, (int)($_GET['page'] ?? 1));
-$totalPages   = max(1, (int)ceil($totalItems / $perPage));
+$perPage = 4;
+$currentPage = max(1, (int)($_GET['page'] ?? 1));
+$totalPages = max(1, (int)ceil($totalItems / $perPage));
 $pageProducts = array_slice($products, ($currentPage - 1) * $perPage, $perPage);
 
 function stockBarClass(int $pct): string {
@@ -24,29 +31,38 @@ function stockBarClass(int $pct): string {
     if ($pct >= 30) return 'stock-med';
     return 'stock-low';
 }
-
-include '../Navbar.php';
-include '../Sidebar.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cafeteria — Products</title>
-  <link rel="stylesheet" href="../../assets/css/admin_products.css">
-
-  <!-- Bootstrap 5 -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-  <!-- Bootstrap Icons -->
+  <title>Cafeteria - Products</title>
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/admin_products.css">
 </head>
 <body>
+<?php include '../Navbar.php'; ?>
+<?php include '../Sidebar.php'; ?>
+
 <div class="main-content">
+  <?php if ($flashSuccess): ?>
+    <div class="alert alert-success alert-dismissible fade show flash-banner" role="alert">
+      <i class="bi bi-check-circle-fill me-2"></i><?= htmlspecialchars($flashSuccess) ?>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <?php endif; ?>
+  <?php if ($flashError): ?>
+    <div class="alert alert-danger alert-dismissible fade show flash-banner" role="alert">
+      <i class="bi bi-exclamation-triangle-fill me-2"></i><?= htmlspecialchars($flashError) ?>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <?php endif; ?>
+
   <div class="d-flex align-items-start justify-content-between mb-4">
     <div>
       <h1 class="page-title">Manage Products</h1>
@@ -57,7 +73,6 @@ include '../Sidebar.php';
     </a>
   </div>
 
-  <!-- Stat Cards -->
   <div class="row g-4 mb-4">
     <div class="col-md-4">
       <div class="stat-card sc-pink">
@@ -75,7 +90,6 @@ include '../Sidebar.php';
     </div>
   </div>
 
-  <!-- Products Table -->
   <div class="products-card">
     <table class="pt">
       <thead>
@@ -97,17 +111,18 @@ include '../Sidebar.php';
         <?php else: ?>
           <?php foreach ($pageProducts as $p): ?>
             <?php
-            $catResult = $db->select("categories", "id=" . (int)$p['category_id']);
+            $catResult = $db->select('categories', 'id=' . (int)$p['category_id']);
             $cat = $catResult->fetch_assoc();
-            $catName=$cat['name'];
-             $stockPct = max(0, min(100, (int)(($p['quantity'] ?? 0) / 100 * 100)));
+            $catName = $cat['name'] ?? 'Uncategorized';
+            $catSlug = strtolower(preg_replace('/[^a-z0-9]+/', '-', $catName));
+            $catClass = in_array($catSlug, ['pastries', 'drinks', 'sweets'], true) ? 'cat-' . $catSlug : 'cat-other';
+            $stockPct = max(0, min(100, (int)($p['quantity'] ?? 0)));
             ?>
             <tr>
               <td>
                 <div class="d-flex align-items-center gap-3">
                   <?php if (!empty($p['img'])): ?>
-                    <img src="<?= htmlspecialchars($p['img']) ?>"
-                         alt="" class="prod-thumb">
+                    <img src="<?= htmlspecialchars($p['img']) ?>" alt="" class="prod-thumb">
                   <?php else: ?>
                     <div class="prod-thumb"></div>
                   <?php endif; ?>
@@ -117,15 +132,9 @@ include '../Sidebar.php';
                   </div>
                 </div>
               </td>
-
-              <!-- Category -->
-             <td>
-           <span class="cat <?= $catClass ?>">
-           <?= htmlspecialchars($catName) ?>
-            </span>
-            </td>
-
-              <!-- Stock bar -->
+              <td>
+                <span class="cat <?= $catClass ?>"><?= htmlspecialchars($catName) ?></span>
+              </td>
               <td>
                 <div class="stock-wrap <?= stockBarClass($stockPct) ?>">
                   <div class="stock-track">
@@ -134,20 +143,13 @@ include '../Sidebar.php';
                   <span class="stock-pct"><?= $stockPct ?>%</span>
                 </div>
               </td>
-
-              <!-- Price -->
               <td><span class="price-val">$<?= number_format((float)($p['price'] ?? 0), 2) ?></span></td>
-
-              <!-- Actions -->
               <td>
                 <div class="d-flex justify-content-end gap-2">
-                  <a href="product-edit.php?id=<?=($p['id']) ?>"
-                     class="act-btn" title="Edit">
+                  <a href="product-edit.php?id=<?= (int)$p['id'] ?>" class="act-btn" title="Edit">
                     <i class="bi bi-pencil"></i>
                   </a>
-                  <a href="product-delete.php?id=<?= ($p['id']) ?>"
-                     class="act-btn del" title="Delete"
-                     >
+                  <a href="product-delete.php?id=<?= (int)$p['id'] ?>" class="act-btn del" title="Delete">
                     <i class="bi bi-trash3"></i>
                   </a>
                 </div>
@@ -158,10 +160,9 @@ include '../Sidebar.php';
       </tbody>
     </table>
 
-    <!-- Pagination -->
     <div class="tbl-footer">
       <span class="showing">
-        Showing <?= ($currentPage - 1) * $perPage + 1 ?> to
+        Showing <?= $totalItems > 0 ? (($currentPage - 1) * $perPage + 1) : 0 ?> to
         <?= min($currentPage * $perPage, $totalItems) ?> of <?= $totalItems ?> items
       </span>
       <ul class="cpag">
@@ -170,9 +171,7 @@ include '../Sidebar.php';
         </li>
         <?php for ($pg = 1; $pg <= $totalPages; $pg++): ?>
           <li class="<?= $pg === $currentPage ? 'pg-active' : '' ?>">
-            <?= $pg === $currentPage
-              ? "<span>$pg</span>"
-              : "<a href='?page=$pg'>$pg</a>" ?>
+            <?= $pg === $currentPage ? "<span>$pg</span>" : "<a href='?page=$pg'>$pg</a>" ?>
           </li>
         <?php endfor; ?>
         <li class="<?= $currentPage >= $totalPages ? 'pg-disabled' : '' ?>">
@@ -181,8 +180,8 @@ include '../Sidebar.php';
       </ul>
     </div>
   </div>
-
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
