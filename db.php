@@ -23,7 +23,7 @@ class DATA_BASE {
 
     private $host = "localhost";
     private $user = "root";
-    private $pass = "1234";
+    private $pass = "123456";
     private $db   = "php_project";
     private static $instance;
 

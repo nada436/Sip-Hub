@@ -1,14 +1,16 @@
 <?php
-require_once '../../config/config.php';
+$activePage = 'products';
+require_once '../../db.php';
 
 $activePage = 'products';
-
-// Flash messages from product-delete
-$flashSuccess = $_SESSION['flash_success'] ?? '';
-$flashError   = $_SESSION['flash_error']   ?? '';
-unset($_SESSION['flash_success'], $_SESSION['flash_error']);
-
 require_once '../../db.php';
+
+$db = DATA_BASE::getInstance();
+
+// ── Flash messages from redirect ─────────────────────────────
+$flashSuccess = $_GET['success'] ?? '';
+$flashError   = $_GET['error']   ?? '';
+
 
 $db = DATA_BASE::getInstance();
 $result = $db->selectAll('products');
@@ -37,8 +39,13 @@ function stockBarClass(int $pct): string {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cafeteria - Products</title>
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
+  <title>Cafeteria — Products</title>
+
+  <!-- Bootstrap 5 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <!-- Bootstrap Icons -->
+
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -63,12 +70,12 @@ function stockBarClass(int $pct): string {
     </div>
   <?php endif; ?>
 
-  <div class="d-flex align-items-start justify-content-between mb-4">
+  <div class="d-flex flex-wrap align-items-start justify-content-between gap-3 mb-4">
     <div>
       <h1 class="page-title">Manage Products</h1>
       <p class="page-subtitle mb-0">Sweeten up the menu by adding or editing cafeteria items.</p>
     </div>
-    <a href="product-add.php" class="btn-add">
+    <a href="product_form.php" class="btn-add">
       <i class="bi bi-plus-circle"></i> Add New Item
     </a>
   </div>
@@ -121,8 +128,9 @@ function stockBarClass(int $pct): string {
             <tr>
               <td>
                 <div class="d-flex align-items-center gap-3">
-                  <?php if (!empty($p['img'])): ?>
-                    <img src="<?= htmlspecialchars($p['img']) ?>" alt="" class="prod-thumb">
+                  <?php if (!empty($p['image'])): ?>
+                  <img src="<?php echo '../../images/' . $p['image']; ?>"  style="width: 60px; height: 60px; object-fit: cover;">
+
                   <?php else: ?>
                     <div class="prod-thumb"></div>
                   <?php endif; ?>
@@ -146,7 +154,10 @@ function stockBarClass(int $pct): string {
               <td><span class="price-val">$<?= number_format((float)($p['price'] ?? 0), 2) ?></span></td>
               <td>
                 <div class="d-flex justify-content-end gap-2">
-                  <a href="product-edit.php?id=<?= (int)$p['id'] ?>" class="act-btn" title="Edit">
+
+                  <a href="product_form.php?id=<?=($p['id']) ?>"
+                     class="act-btn" title="Edit">
+
                     <i class="bi bi-pencil"></i>
                   </a>
                   <a href="product-delete.php?id=<?= (int)$p['id'] ?>" class="act-btn del" title="Delete">
@@ -183,5 +194,6 @@ function stockBarClass(int $pct): string {
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../assets/js/admin_layout.js"></script>
 </body>
 </html>
