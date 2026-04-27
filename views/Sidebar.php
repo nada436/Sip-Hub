@@ -15,15 +15,15 @@ $activePage = $activePage ?? '';
 $menuItems = [
   /* ── MAIN ── */
   ['section' => 'Main'],
-  ['id' => 'home',       'icon' => 'bi-house',      'label' => 'Home'],
-  ['id' => 'dashboard',  'icon' => 'bi-grid-1x2',   'label' => 'Dashboard'],
+
+
   ['id' => 'live-orders','icon' => 'bi-lightning-charge','label' => 'Current Orders'],
 
   /* ── MANAGEMENT ── */
   ['section' => 'Management'],
-  ['id' => 'orders',     'icon' => 'bi-bag-check',  'label' => 'Orders'],
+
   ['id' => 'products',   'icon' => 'bi-box-seam',   'label' => 'Products'],
-  ['id' => 'categories', 'icon' => 'bi-tag',        'label' => 'Categories'],
+  ['id' => 'live-categories', 'icon' => 'bi-tag',        'label' => 'Categories'],
   ['id' => 'users',      'icon' => 'bi-people',     'label' => 'Users'],
 
   /* ── ANALYTICS ── */
