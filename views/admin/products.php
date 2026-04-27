@@ -2,9 +2,6 @@
 $activePage = 'products';
 require_once '../../db.php';
 
-$activePage = 'products';
-require_once '../../db.php';
-
 $db = DATA_BASE::getInstance();
 
 // ── Flash messages from redirect ─────────────────────────────
