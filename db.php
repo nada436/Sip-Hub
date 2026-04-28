@@ -37,7 +37,8 @@ class DATA_BASE {
                 $this->host,
                 $this->user,
                 $this->pass,
-                $this->db
+                $this->db,
+                3307
             );
 
             if ($this->conn->connect_error) {
@@ -77,16 +78,23 @@ class DATA_BASE {
         }
         return self::$instance;
     }
-   // INSERT
-public function insert($table, $columns, $values) {
-    $sql = "INSERT INTO $table ($columns) VALUES ($values)";
-    $this->runQuery($sql);
 
-    if ($this->driver === 'mysqli') {
-        return $this->conn->insert_id;
+    // ── ADDED: returns the raw connection for prepared statements.
+    //    Used only by cart_action.php — no other files need this.
+    public function getRawConnection() {
+        return $this->conn;
     }
 
-    return (int)$this->conn->lastInsertId(); 
+    // INSERT
+    public function insert($table, $columns, $values) {
+        $sql = "INSERT INTO $table ($columns) VALUES ($values)";
+        $this->runQuery($sql);
+
+        if ($this->driver === 'mysqli') {
+            return $this->conn->insert_id;
+        }
+
+        return (int)$this->conn->lastInsertId(); 
 
     }
 
