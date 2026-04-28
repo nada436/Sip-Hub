@@ -30,19 +30,6 @@
     </ul>
 
     <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0">
-
-      <input type="search"
-             class="search-input d-none d-md-block"
-             placeholder="Search sweets…"
-             aria-label="Search" />
-
-      <a href="notifications.php" class="icon-btn" title="Notifications">
-        <i class="bi bi-bell"></i>
-        <?php if ($notif_count > 0): ?>
-          <span class="dot"><?= (int)$notif_count ?></span>
-        <?php endif; ?>
-      </a>
-
       <a href="cart.php" class="icon-btn" title="Cart">
         <i class="bi bi-cart3"></i>
         <?php if ($cart_count > 0): ?>

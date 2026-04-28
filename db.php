@@ -38,7 +38,7 @@ class DATA_BASE {
                 $this->user,
                 $this->pass,
                 $this->db,
-                3307
+                // 3307
             );
 
             if ($this->conn->connect_error) {
