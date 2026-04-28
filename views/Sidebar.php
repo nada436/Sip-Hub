@@ -32,10 +32,10 @@ $menuItems = [
 ];
 
 // Resolve logged-in admin name (fallback to session or default)
-$adminName  = $_SESSION['admin_name']  ?? 'Admin';
-$adminEmail = $_SESSION['admin_email'] ?? 'admin@cafeteria.com';
-$adminRole  = $_SESSION['admin_role']  ?? 'Head Manager';
-$avatarUrl  = 'https://ui-avatars.com/api/?name=' . urlencode($adminName) . '&background=e91e8c&color=fff&size=80';
+$adminName  = $_SESSION['user_name'] ;
+$adminEmail =$_SESSION['user_email'];
+$adminRole  =$_SESSION['user_role'] ;
+$avatarUrl = "https://ui-avatars.com/api/?name=" . urlencode($adminName) . "&background=e91e8c&color=fff&size=80";
 ?>
 
 <!-- Sidebar backdrop (mobile overlay) -->
@@ -91,7 +91,7 @@ $avatarUrl  = 'https://ui-avatars.com/api/?name=' . urlencode($adminName) . '&ba
       <div style="min-width:0;">
         <p class="s-admin-name text-truncate"><?= htmlspecialchars($adminName) ?></p>
         <p class="s-admin-role text-truncate"><?= htmlspecialchars($adminRole) ?></p>
-        <a href="logout.php" class="s-admin-logout">
+        <a href="../../logout.php" class="s-admin-logout">
           <i class="bi bi-box-arrow-right me-1"></i>Logout
         </a>
       </div>

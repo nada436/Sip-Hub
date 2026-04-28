@@ -35,24 +35,38 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     return;
 }
 
-// ── 4. Credential verification ────────────────────────────────
-// DEMO: plain-text comparison.
-// PRODUCTION: query your DB, then:
-//   password_verify($password, $row['password_hash'])
-if ($email === DEMO_EMAIL && $password === DEMO_PASSWORD) {
 
-    // ✅ Login successful
-    // Rotate the session ID to prevent session-fixation attacks.
-    session_regenerate_id(true);
+// ── 4. Credential verification (DB CHECK) ───────────────────────
+require_once __DIR__ . '/../db.php';
 
-    // Store user identity in the session (persists across pages).
-    $_SESSION['user_email'] = $email;
-    $_SESSION['logged_in']  = true;
+$db = DATA_BASE::getInstance();
+$userResult = $db->select('users', "email = '" . addslashes($email) . "'");
+$user = $userResult->fetch_assoc();
 
-    // POST → Redirect → GET: prevents form re-submission on refresh.
-    header('Location: ' . BASE_URL . '/dashboard.php');
-    exit;
+// Check if user exists
+if ($user) {
+
+    if ($password=== $user['password']) {
+        session_regenerate_id(true);
+
+        $_SESSION['user_id']    = $user['id'];
+        $_SESSION['user_email'] = $user['email'];
+        $_SESSION['user_name']  = $user['name'];
+        $_SESSION['user_role']  = $user['role'];
+        $_SESSION['logged_in']  = true;
+
+        if($user['role']=='admin'){
+          header('Location: ' . BASE_URL . '/views/admin/products.php');
+        }
+       else{
+           header('Location: ' . BASE_URL . '/views/user_pages/UserPage.php');
+       }
+        exit;
+
+    } else {
+        $error = "Invalid email or password.";
+    }
+
+} else {
+    $error = "Invalid email or password.";
 }
-
-// ── 5. Credentials didn't match ───────────────────────────────
-$error = 'Invalid email or password. Please try again.';

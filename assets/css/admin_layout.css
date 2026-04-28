@@ -108,35 +108,52 @@ body {
 
 /* Nav icon buttons */
 .nav-icon-btn {
-  background: none;
-  border: none;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  font-size: 1.1rem;
-  color: var(--text);
-  transition:
-    background var(--transition),
-    color var(--transition);
-  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  background: transparent;
+  border: 1px solid transparent;
+
+  color: #444;
+  font-size: 14px;
+  font-weight: 500;
+
+  padding: 6px 10px;
+  border-radius: 10px;
+
   cursor: pointer;
-}
-.nav-icon-btn:hover {
-  background: var(--pink-light);
-  color: var(--pink);
+  transition: all 0.25s ease;
 }
 
-.notif-dot {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 8px;
-  height: 8px;
-  background: var(--pink);
-  border-radius: 50%;
-  border: 2px solid #fff;
+/* Hover state */
+.nav-icon-btn:hover {
+  background: #fff0f6;
+  color: #e91e8c; /* Candy theme color */
+  border-color: #f8c5dc;
+  transform: translateY(-1px);
+}
+
+/* Active click */
+.nav-icon-btn:active {
+  transform: scale(0.97);
+}
+
+/* Focus accessibility */
+.nav-icon-btn:focus {
+  outline: 2px solid #e91e8c;
+  outline-offset: 2px;
+}
+
+/* Special logout emphasis */
+.logout-btn {
+  color: #dc3545;
+}
+
+.logout-btn:hover {
+  background: #ffe5e8;
+  border-color: #ffb3bd;
+  color: #c82333;
 }
 
 .nav-avatar {

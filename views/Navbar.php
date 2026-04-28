@@ -22,34 +22,15 @@ $searchPlaceholder = $searchPlaceholder ?? 'Search...';
 
     <!-- Brand -->
     <a class="candy-brand" href="dashboard.php">
-      <span style="font-family:'Pacifico',cursive;">Candy</span>
-      <span style="font-weight:600;font-family:'Poppins',sans-serif;font-size:1rem;vertical-align:middle;"> Cafeteria</span>
+      <span style="font-weight:600;font-family:'Poppins',sans-serif;font-size:1rem;vertical-align:middle;"> Caffeteria</span>
     </a>
 
-    <!-- Search -->
-    <div class="search-wrap mx-auto">
-      <i class="bi bi-search"></i>
-      <input
-        type="text"
-        class="candy-search"
-        placeholder="<?= htmlspecialchars($searchPlaceholder) ?>"
-        autocomplete="off"
-      >
-    </div>
+  
 
     <!-- Right controls -->
     <div class="d-flex align-items-center gap-2">
-      <button class="nav-icon-btn" title="Notifications" aria-label="Notifications">
-        <i class="bi bi-bell"></i>
-        <span class="notif-dot"></span>
-      </button>
-
-      <button class="nav-icon-btn" title="Cart" aria-label="Cart">
-        <i class="bi bi-cart3"></i>
-      </button>
-
       <img
-        src="https://ui-avatars.com/api/?name=Admin&background=e91e8c&color=fff&size=80"
+      src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['user_name']) ?>&background=e91e8c&color=fff&size=80"
         alt="Admin avatar"
         class="nav-avatar"
         title="Admin"
@@ -57,3 +38,4 @@ $searchPlaceholder = $searchPlaceholder ?? 'Search...';
     </div>
   </div>
 </nav>
+  
