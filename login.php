@@ -14,11 +14,16 @@ require_once 'config/google_oauth.php';  // Google OAuth helpers
 require_once 'includes/auth.php';        // Login form handler (sets $error, $success, $email)
 
 // Redirect if already logged in (guard placed after session_start in config.php)
-if (!empty($_SESSION['logged_in'])) {
-    header('Location: ' . BASE_URL . '/dashboard.php');
+if (!empty($_SESSION['logged_in'])  ) {
+    if($_SESSION['role'] = "admin"){
+       header('Location: ' . BASE_URL . '/views/admin/products.php');
+    }
+    else{
+        header('Location: ' . BASE_URL . '/views/user_pages/UserPage.php');
+    }
+   
     exit;
-}
-
+}  
 // Build the Google Sign-In URL (passed into the view as $googleAuthURL)
 $googleAuthURL = getGoogleAuthURL();
 

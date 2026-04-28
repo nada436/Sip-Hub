@@ -1,15 +1,18 @@
 <?php
-$activePage = 'products';
-require_once '../../db.php';
-
+// ── Bootstrap & DB ─────────────────────────────────────────────
+require_once __DIR__ . '/../../config/config.php';
+require_once __DIR__ . '/../../db.php';
+require_once __DIR__ . '/../../includes/auth_guard.php';
 $db = DATA_BASE::getInstance();
+
+$activePage = 'products';
+$searchPlaceholder = 'Search products...';
 
 // ── Flash messages from redirect ─────────────────────────────
 $flashSuccess = $_GET['success'] ?? '';
 $flashError   = $_GET['error']   ?? '';
 
 
-$db = DATA_BASE::getInstance();
 $result = $db->selectAll('products');
 $products = [];
 while ($row = $result->fetch_assoc()) {
@@ -18,7 +21,7 @@ while ($row = $result->fetch_assoc()) {
 
 $totalItems = count($products);
 $activeTreats = count(array_filter($products, fn($p) => (int)($p['quantity'] ?? 0) > 0));
-$lowStock = count(array_filter($products, fn($p) => (int)($p['quantity'] ?? 0) < 30));
+$lowStock = count(array_filter($products, fn($p) => (int)($p['quantity'] ?? 0) < 10));
 
 $perPage = 4;
 $currentPage = max(1, (int)($_GET['page'] ?? 1));
@@ -47,6 +50,7 @@ function stockBarClass(int $pct): string {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/admin_layout.css">
   <link rel="stylesheet" href="../../assets/css/admin_products.css">
 </head>
 <body>

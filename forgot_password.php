@@ -48,7 +48,7 @@ require_once 'includes/forgot_password.php';  // Sets $fp_error, $fp_success, $f
         </a>
 
         <h2 class="card-title">Reset Password</h2>
-        <p class="card-subtitle">Enter your work email and we'll send you a reset link.</p>
+        <p class="card-subtitle">Enter your email and a new password to reset your account.</p>
 
         <!-- Error banner -->
         <?php if (!empty($fp_error)): ?>
@@ -77,10 +77,6 @@ require_once 'includes/forgot_password.php';  // Sets $fp_error, $fp_success, $f
                             <polyline points="22,6 12,13 2,6"/>
                         </svg>
                     </span>
-                    <!--
-                        name="fp_email" → read as $_POST['fp_email']
-                        in includes/forgot_password.php
-                    -->
                     <input
                         type="email"
                         id="fp_email"
@@ -93,8 +89,29 @@ require_once 'includes/forgot_password.php';  // Sets $fp_error, $fp_success, $f
                 </div>
             </div>
 
+            <!-- New Password field -->
+            <div class="form-group">
+                <label for="fp_password">New Password</label>
+                <div class="input-wrap">
+                    <span class="input-icon">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                            <path d="M12 11V7a4 4 0 0 1 8 0v4h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h9z"/>
+                            <rect x="3" y="11" width="18" height="11" rx="2"/>
+                            <circle cx="12" cy="16" r="2"/>
+                        </svg>
+                    </span>
+                    <input
+                        type="password"
+                        id="fp_password"
+                        name="fp_password"
+                        placeholder="Min 6 characters"
+                        required
+                    >
+                </div>
+            </div>
+
             <button type="submit" class="btn-primary">
-                Send Reset Link
+                Update Password
                 <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </button>
         </form>

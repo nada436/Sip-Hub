@@ -1,7 +1,9 @@
 <?php
 $activePage = 'products';
+$searchPlaceholder = 'Search products...';
 require_once '../../db.php';
-
+require_once '../../config/config.php';
+require_once __DIR__ . '/../../includes/auth_guard.php';
 $db = DATA_BASE::getInstance();
 $id = isset($_GET['id']) ? intval($_GET['id']) : null;
 $product = null;
@@ -115,17 +117,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ];
 }
 
+// ── Asset paths (relative from views/admin/) ─────────────────────
+$cssRoot = BASE_URL . '/assets/css';
+$jsRoot  = BASE_URL . '/assets/js';
+
 $categories = $db->selectAll("categories");
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?= $isEdit ? 'Edit Product' : 'Add Product' ?> — Candyfi</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
- <link rel="stylesheet" href="../../assets/css/admin_products.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><?= $isEdit ? 'Edit Product' : 'Add Product' ?> — <?= APP_NAME ?></title>
+
+  <!-- Bootstrap 5 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+
+  <!-- Shared admin styles -->
+  <link rel="stylesheet" href="<?= $cssRoot ?>/admin_layout.css">
+  <!-- Page-specific styles -->
+  <link rel="stylesheet" href="<?= $cssRoot ?>/admin_products.css">
 <style>
   .alert-error {
     background: #fff0f3;
@@ -301,6 +318,7 @@ include '../Sidebar.php';
   </form>
 </main>
 
-<script src="../../assets/js/admin_layout.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="<?= $jsRoot ?>/admin_layout.js"></script>
 </body>
 </html>
