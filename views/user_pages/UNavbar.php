@@ -1,6 +1,10 @@
 <?php
 // views/user_pages/UNavbar.php
-// Expects from parent: $nav_links, $cart_count, $notif_count, $user_avatar, $user_name, $current_page
+// Expects from parent: $nav_links, $cart_count, $current_page
+// Reads user info directly from session
+
+$user_name = $_SESSION['name'] ?? 'Guest';
+$user_initial = strtoupper(substr($user_name, 0, 1)); // First letter for avatar
 ?>
 <nav class="navbar navbar-expand-lg sticky-top px-3">
 
@@ -30,20 +34,34 @@
     </ul>
 
     <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0">
+
+      <!-- Cart -->
       <a href="cart.php" class="icon-btn" title="Cart">
         <i class="bi bi-cart3"></i>
-        <?php if ($cart_count > 0): ?>
+        <?php if (!empty($cart_count) && $cart_count > 0): ?>
           <span class="dot"><?= (int)$cart_count ?></span>
         <?php endif; ?>
       </a>
 
+      <!-- User dropdown -->
       <div class="dropdown">
-        <img src="<?= htmlspecialchars($user_avatar) ?>"
-             alt="<?= htmlspecialchars($user_name) ?>"
-             class="avatar"
+
+        <!-- Avatar: shows first letter of user's name, no real photo -->
+        <div class="avatar"
              role="button"
              data-bs-toggle="dropdown"
-             aria-expanded="false" />
+             aria-expanded="false"
+             title="<?= htmlspecialchars($user_name) ?>"
+             style="
+               width:38px; height:38px; border-radius:50%;
+               background:var(--pink, #e91e8c); color:#fff;
+               display:flex; align-items:center; justify-content:center;
+               font-weight:700; font-size:1rem; cursor:pointer;
+               user-select:none; flex-shrink:0;
+             ">
+          <?= htmlspecialchars($user_initial) ?>
+        </div>
+
         <ul class="dropdown-menu dropdown-menu-end">
           <li>
             <span class="dropdown-header fw-bold" style="color:var(--pink)">
@@ -53,7 +71,11 @@
           <li><a class="dropdown-item" href="profile.php"><i class="bi bi-person me-2"></i>Profile</a></li>
           <li><a class="dropdown-item" href="orders.php"><i class="bi bi-bag-check me-2"></i>My Orders</a></li>
           <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item text-danger" href="logout.php"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+          <li>
+            <a class="dropdown-item text-danger" href="http://localhost/Sip-Hub/logout.php">
+              <i class="bi bi-box-arrow-right me-2"></i>Logout
+            </a>
+          </li>
         </ul>
       </div>
 

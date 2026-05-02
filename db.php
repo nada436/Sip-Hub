@@ -23,7 +23,7 @@ class DATA_BASE {
 
     private $host = "localhost";
     private $user = "root";
-    private $pass = "123456";
+    private $pass = "";
     private $db   = "php_project";
     private static $instance;
 
@@ -38,7 +38,7 @@ class DATA_BASE {
                 $this->user,
                 $this->pass,
                 $this->db,
-                // 3307
+                 3307
             );
 
             if ($this->conn->connect_error) {

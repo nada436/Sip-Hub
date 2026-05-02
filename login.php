@@ -15,11 +15,11 @@ require_once 'includes/auth.php';        // Login form handler (sets $error, $su
 
 // Redirect if already logged in (guard placed after session_start in config.php)
 if (!empty($_SESSION['logged_in'])  ) {
-    if($_SESSION['role'] = "admin"){
+    if($_SESSION['role'] === "admin"){
        header('Location: ' . BASE_URL . '/views/admin/products.php');
     }
     else{
-        header('Location: ' . BASE_URL . '/views/user_pages/UserPage.php');
+        header('Location: ' . BASE_URL . '/views/user_pages/index.php');
     }
    
     exit;

@@ -1,32 +1,48 @@
 <?php
 // views/user_pages/orders.php
 
-require_once __DIR__ . '/../../db.php';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-$db      = DATA_BASE::getInstance();
-$user_id = 1; // ← swap with $_SESSION['user_id'] once login is ready
+if (empty($_SESSION['logged_in'])) {
+    header('Location: http://localhost/Sip-Hub/login.php');
+    exit;
+}
+
+require_once __DIR__ . '/../../db.php';
+$db = DATA_BASE::getInstance();
+$user_id = (int) $_SESSION['user_id'];
 
 $current_page = 'orders';
 $nav_links    = [
-    ['href' => 'index.php',    'label' => 'Home',     'page' => 'index'],
-    ['href' => 'products.php', 'label' => 'Products', 'page' => 'products'],
-    ['href' => 'orders.php',   'label' => 'Orders',   'page' => 'orders'],
+    ['href' => 'index.php',  'label' => 'Home',     'page' => 'index'],
+    ['href' => 'index.php#menu', 'label' => 'Products', 'page' => 'products'],
+    ['href' => 'orders.php', 'label' => 'Orders',   'page' => 'orders'],
 ];
-$notif_count = 0;
 $cart_count  = 0;
-$user_avatar = 'https://i.pravatar.cc/40?img=12';
-$user_name   = 'Marina George';
+$notif_count = 0;
 
-// Fetch orders newest first
-$orders_res = $db->selectAll('orders', "user_id=$user_id ORDER BY created_at DESC");
+
+$conn = $db->getRawConnection();
+$stmt = $conn->prepare("
+    SELECT o.*,
+           ROW_NUMBER() OVER (PARTITION BY o.user_id ORDER BY o.created_at ASC) AS user_order_num
+    FROM orders o
+    WHERE o.user_id = ?
+    ORDER BY o.created_at DESC
+");
+$stmt->bind_param('i', $user_id);
+$stmt->execute();
+$orders_res = $stmt->get_result();
 $orders = [];
 while ($o = $orders_res->fetch_assoc()) $orders[] = $o;
 
-// Fetch items per order
+// ── 5. Fetch items per order ──────────────────────────────────
 $order_details = [];
 foreach ($orders as $order) {
-    $oid  = (int)$order['id'];
-    $ir   = $db->selectAll('order_items', "order_id=$oid");
+    $oid   = (int)$order['id'];
+    $ir    = $db->selectAll('order_items', "order_id=$oid");
     $items = [];
     while ($item = $ir->fetch_assoc()) {
         $prod    = $db->select('products', "id={$item['product_id']}")->fetch_assoc();
@@ -87,7 +103,7 @@ $status_style = [
 
         <div class="order-head">
           <div>
-            <div class="order-meta-id">Order #<?= $oid ?></div>
+            <div class="order-meta-id">Order #<?= (int)$order['user_order_num'] ?></div>
             <div class="order-meta-date">
               <?= date('M j, Y — g:i A', strtotime($order['created_at'])) ?>
             </div>
