@@ -14,7 +14,7 @@ if (session_status() === PHP_SESSION_NONE) {
 // ── App constants ─────────────────────────────────────────────
 define('APP_NAME',    'OfficeOasis');
 define('APP_TAGLINE', 'Your daily nourishment, simplified.');
-define('BASE_URL',    'http://localhost/siphub');   // Change to your domain
+define('BASE_URL', 'http://localhost/Sip-Hub');
 
 
 

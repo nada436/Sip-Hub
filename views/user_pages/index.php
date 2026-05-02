@@ -1,7 +1,8 @@
 <?php
 // views/user_pages/index.php
-
 require_once __DIR__ . '/../../db.php';
+require_once __DIR__ . '/../../config/config.php';
+require_once __DIR__ . '/../../includes/auth_guard.php';
 $db = DATA_BASE::getInstance();
 
 $current_page = 'index';
@@ -15,7 +16,7 @@ $nav_links = [
 $notif_count = 0;
 $cart_count  = 0;
 $user_avatar = 'https://i.pravatar.cc/40?img=12';
-$user_name   = 'Marina George';
+$user_name   = 'Guest';
 
 $slides = [
     [
@@ -66,7 +67,6 @@ $slides = [
 
 <?php include __DIR__ . '/Products.php'; ?>
 
-<!-- ══════════ CART DRAWER ══════════ -->
 <div id="cartOverlay"></div>
 
 <div id="cartDrawer" role="dialog" aria-label="Your Cart">
@@ -102,7 +102,7 @@ $slides = [
   </div>
 </div>
 
-<!-- ══════════ ORDER SUCCESS ══════════ -->
+
 <div id="orderSuccess">
   <div class="success-ring">🎉</div>
   <div class="success-title">Order Placed!</div>
@@ -116,14 +116,12 @@ $slides = [
   </div>
 </div>
 
-<!-- Toast notification -->
 <div id="cartToast">
   <i class="bi bi-cart-check-fill"></i>
   <span id="cartToastMsg">Added to cart!</span>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- cart.js must load before products.js (exposes openCartDrawer, updateCartBadge, showToast) -->
 <script src="../../assets/js/cart.js"></script>
 <script src="../../assets/js/products.js"></script>
 </body>

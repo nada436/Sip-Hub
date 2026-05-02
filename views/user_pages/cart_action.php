@@ -1,23 +1,31 @@
 <?php
 // views/user_pages/cart_action.php
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+header('Content-Type: application/json');
+if (empty($_SESSION['logged_in'])) {
+    echo json_encode(['ok' => false, 'msg' => 'Not logged in']);
+    exit;
+}
+
 require_once __DIR__ . '/../../config/config.php';
 require_once __DIR__ . '/../../db.php';
 
-header('Content-Type: application/json');
+$db = DATA_BASE::getInstance();
 
-$db      = DATA_BASE::getInstance();
-$user_id = 1; 
+$user_id = (int) $_SESSION['user_id'];
 
 $action     = $_POST['action']     ?? ($_GET['action'] ?? '');
 $product_id = (int)($_POST['product_id'] ?? 0);
 $quantity   = max(1, (int)($_POST['quantity'] ?? 1));
 
-// ── Helper: build full cart array ────────────────────────────
 function buildCart($db, $user_id) {
-    $res   = $db->selectAll('cart', "user_id = $user_id");
-    $items = [];
-    $total_qty  = 0;
+    $res         = $db->selectAll('cart', "user_id = $user_id");
+    $items       = [];
+    $total_qty   = 0;
     $total_price = 0.0;
 
     while ($row = $res->fetch_assoc()) {
@@ -29,7 +37,7 @@ function buildCart($db, $user_id) {
         $items[] = [
             'product_id' => (int)$row['product_id'],
             'name'       => $prod['name'],
-            'image'    => $prod ? $prod['image']  : '',
+            'image'      => $prod['image'],
             'price'      => (float)$prod['price'],
             'quantity'   => (int)$row['quantity'],
             'subtotal'   => $subtotal,
@@ -75,8 +83,8 @@ switch ($action) {
             echo json_encode(['ok' => false, 'msg' => 'Cart is empty']);
             break;
         }
-        $total     = $cart['total_price'];
-        $order_id  = $db->insert('orders', 'user_id,total_price,status', "$user_id,$total,'processing'");
+        $total    = $cart['total_price'];
+        $order_id = $db->insert('orders', 'user_id,total_price,status', "$user_id,$total,'processing'");
         foreach ($cart['items'] as $item) {
             $pid   = $item['product_id'];
             $qty   = $item['quantity'];
@@ -84,7 +92,25 @@ switch ($action) {
             $db->insert('order_items', 'order_id,product_id,quantity,price', "$order_id,$pid,$qty,$price");
         }
         $db->delete('cart', "user_id=$user_id");
-        echo json_encode(['ok' => true, 'order_id' => $order_id, 'total' => $total]);
+
+        // Resolve per-user order number (1 = first order, 2 = second, …)
+        $conn = $db->getRawConnection();
+        $stmt = $conn->prepare("
+            SELECT user_order_num FROM (
+                SELECT id,
+                       ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY created_at ASC) AS user_order_num
+                FROM orders
+                WHERE user_id = ?
+            ) ranked
+            WHERE id = ?
+        ");
+        $stmt->bind_param('ii', $user_id, $order_id);
+        $stmt->execute();
+        $stmt->bind_result($user_order_num);
+        $stmt->fetch();
+        $stmt->close();
+
+        echo json_encode(['ok' => true, 'order_id' => (int)$user_order_num, 'total' => $total]);
         break;
 
     default:
