@@ -33,6 +33,5 @@ $searchPlaceholder = $searchPlaceholder ?? 'Search...';
         title="<?= htmlspecialchars($_SESSION['name'] ?? 'Admin') ?>"
       >
     </div>
-
   </div>
 </nav>

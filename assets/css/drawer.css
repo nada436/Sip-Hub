@@ -322,6 +322,7 @@
   cursor: not-allowed;
 }
 
+
 /* ── Order success overlay (index.php version) ───────────── */
 /* ✅ Cart.js adds class "show" to #orderSuccess */
 #orderSuccess {

@@ -53,7 +53,6 @@ $avatarUrl = "https://ui-avatars.com/api/?name=" . urlencode($adminName) . "&bac
       </div>
     </div>
   </div>
-
   <!-- Navigation -->
   <nav class="sidebar-nav">
     <?php foreach ($menuItems as $item): ?>
