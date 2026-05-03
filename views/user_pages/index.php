@@ -55,6 +55,7 @@ $slides = [
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet"/>
   <link href="../../assets/css/User_Style.css" rel="stylesheet"/>
+  <link href="../../assets/css/drawer.css" rel="stylesheet"/>
   <link href="../../assets/css/cart.css" rel="stylesheet"/>
 </head>
 <body>

@@ -1,0 +1,468 @@
+/* ════════════════════════════════════════
+   CART DRAWER — assets/css/drawer.css
+   CSS class names match Cart.js exactly
+════════════════════════════════════════ */
+
+/* ── Overlay ─────────────────────────────────────────────── */
+#cartOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1040;
+}
+
+/* ✅ Cart.js does overlay.classList.add("open") */
+#cartOverlay.open {
+  display: block;
+}
+
+/* ── Drawer panel ─────────────────────────────────────────── */
+#cartDrawer {
+  position: fixed;
+  top: 0;
+  right: -440px;
+  width: 100%;
+  max-width: 420px;
+  height: 100%;
+  background: #fff;
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px 0 0 20px;
+  box-shadow: -8px 0 40px rgba(0, 0, 0, 0.13);
+  transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+/* ✅ Cart.js does drawer.classList.add("open") */
+#cartDrawer.open {
+  right: 0;
+}
+
+/* ── Drag handle ─────────────────────────────────────────── */
+.drawer-handle {
+  width: 40px;
+  height: 4px;
+  background: #e0e0e0;
+  border-radius: 50px;
+  margin: 12px auto 4px;
+  flex-shrink: 0;
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.4rem;
+  border-bottom: 1.5px solid rgba(233, 30, 140, 0.1);
+  flex-shrink: 0;
+}
+
+.drawer-title {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #1a1a2e;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.drawer-title span {
+  color: var(--pink, #e91e8c);
+}
+
+/* Badge next to "Cart" title */
+#drawerBadge {
+  background: var(--pink, #e91e8c);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 50px;
+  padding: 0.1rem 0.6rem;
+  min-width: 22px;
+  text-align: center;
+}
+
+.drawer-close {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: #999;
+  cursor: pointer;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s;
+}
+
+.drawer-close:hover {
+  background: rgba(233, 30, 140, 0.08);
+  color: var(--pink, #e91e8c);
+}
+
+/* ── Body (scrollable) ───────────────────────────────────── */
+.drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.25rem 0;
+}
+
+/* ── Empty state ─────────────────────────────────────────── */
+.drawer-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1rem;
+  text-align: center;
+  gap: 0.5rem;
+}
+
+.drawer-empty i {
+  font-size: 3rem;
+  color: rgba(233, 30, 140, 0.2);
+}
+
+.drawer-empty p {
+  font-family: "DM Sans", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #aaa;
+  margin: 0;
+}
+
+.drawer-empty small {
+  font-size: 0.83rem;
+  color: #ccc;
+}
+
+/* ── Cart item row (rendered by Cart.js) ─────────────────── */
+/* ✅ Cart.js uses class="cart-item" id="ci-{id}" */
+.cart-item {
+  display: grid;
+  grid-template-columns: 60px 1fr auto auto auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1.2rem;
+  border-bottom: 1px solid #f5f5f5;
+  transition: background 0.15s;
+}
+
+.cart-item:hover {
+  background: #fafafa;
+}
+
+/* ✅ Cart.js uses class="cart-item-img" */
+.cart-item-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* ✅ Cart.js uses class="cart-item-info" */
+.cart-item-info {
+  min-width: 0;
+}
+
+/* ✅ Cart.js uses class="cart-item-name" */
+.cart-item-name {
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ✅ Cart.js uses class="cart-item-price" */
+.cart-item-price {
+  font-size: 0.78rem;
+  color: #999;
+  margin-top: 0.15rem;
+}
+
+/* ✅ Cart.js uses class="cart-item-qty" */
+.cart-item-qty {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid rgba(233, 30, 140, 0.2);
+  border-radius: 50px;
+  overflow: hidden;
+  height: 30px;
+}
+
+/* ✅ Cart.js uses class="cq-btn" */
+.cq-btn {
+  background: none;
+  border: none;
+  width: 28px;
+  height: 30px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--pink, #e91e8c);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.cq-btn:hover {
+  background: rgba(233, 30, 140, 0.1);
+}
+
+/* ✅ Cart.js uses class="cq-num" */
+.cq-num {
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  min-width: 24px;
+  text-align: center;
+  user-select: none;
+}
+
+/* ✅ Cart.js uses class="cart-item-sub" */
+.cart-item-sub {
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--pink, #e91e8c);
+  white-space: nowrap;
+}
+
+/* ✅ Cart.js uses class="cart-item-remove" */
+.cart-item-remove {
+  background: none;
+  border: none;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  transition: color 0.2s, background 0.2s;
+}
+
+.cart-item-remove:hover {
+  color: #e53935;
+  background: rgba(229, 57, 53, 0.08);
+}
+
+/* ── Footer ──────────────────────────────────────────────── */
+.drawer-footer {
+  padding: 1rem 1.4rem 1.5rem;
+  border-top: 1.5px solid rgba(233, 30, 140, 0.1);
+  flex-shrink: 0;
+  background: #fff;
+}
+
+.drawer-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.drawer-total-label {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #1a1a2e;
+}
+
+.drawer-total-price {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--pink, #e91e8c);
+}
+
+/* Place order button inside drawer */
+/* ✅ Same .place-order-btn class as Cart.css — already defined there,
+      but repeated here as a fallback if Cart.css isn't loaded */
+.place-order-btn {
+  width: 100%;
+  background: var(--pink, #e91e8c);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 0.85rem 1rem;
+  font-family: "DM Sans", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+.place-order-btn:hover:not(:disabled) {
+  background: #c9186f;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(233, 30, 140, 0.3);
+}
+
+.place-order-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* ── Order success overlay (index.php version) ───────────── */
+/* ✅ Cart.js adds class "show" to #orderSuccess */
+#orderSuccess {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  gap: 0.4rem;
+  padding: 2rem;
+}
+
+#orderSuccess.show {
+  display: flex;
+}
+
+/* ✅ index.php uses class="success-ring" (not .ring like Cart.php) */
+.success-ring {
+  font-size: 4rem;
+  animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  line-height: 1;
+}
+
+.success-title {
+  font-family: "DM Sans", sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #fff;
+  margin-top: 0.5rem;
+}
+
+.success-sub {
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ✅ index.php uses class="success-id" (not .order-num) */
+.success-id {
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #ffb3d9;
+  letter-spacing: 0.05em;
+  margin-top: 0.25rem;
+}
+
+.success-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 1.25rem;
+}
+
+.suc-btn {
+  border-radius: 50px;
+  padding: 0.65rem 1.5rem;
+  font-family: "DM Sans", sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  transition: 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.suc-btn-primary {
+  background: var(--pink, #e91e8c);
+  color: #fff;
+}
+
+.suc-btn-primary:hover {
+  background: #c9186f;
+  color: #fff;
+}
+
+.suc-btn-outline {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+}
+
+.suc-btn-outline:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+@keyframes popIn {
+  from { transform: scale(0.7); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+/* ── Toast ───────────────────────────────────────────────── */
+#cartToast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #1a1a2e;
+  color: #fff;
+  border-radius: 50px;
+  padding: 0.65rem 1.4rem;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 8000;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
+}
+
+#cartToast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* ── Navbar cart badge ───────────────────────────────────── */
+/* ✅ Cart.js uses document.querySelector(".cart-badge") */
+.cart-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: var(--pink, #e91e8c);
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+}

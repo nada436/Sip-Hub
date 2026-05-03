@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_user'])) {
     }
 
     if (empty($errors)) {
-        $hashed    = password_hash($password, PASSWORD_DEFAULT);
+        $hashed    = $password;
         $esc_name  = addslashes($name);
         $esc_email = addslashes($email);
         $esc_role  = addslashes($role);

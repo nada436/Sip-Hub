@@ -32,9 +32,9 @@ $menuItems = [
 ];
 
 // Resolve logged-in admin name (fallback to session or default)
-$adminName  = $_SESSION['user_name'] ;
-$adminEmail =$_SESSION['user_email'];
-$adminRole  =$_SESSION['user_role'] ;
+$adminName  = $_SESSION['name'] ;
+$adminEmail =$_SESSION['email'];
+$adminRole  =$_SESSION['role'] ;
 $avatarUrl = "https://ui-avatars.com/api/?name=" . urlencode($adminName) . "&background=e91e8c&color=fff&size=80";
 ?>
 
